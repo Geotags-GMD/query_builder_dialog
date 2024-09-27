@@ -1,8 +1,8 @@
-# QGIS Query Builder Plugin
+# Query Manager
 
 ## Overview
 
-The QGIS Query Builder Plugin provides an intuitive interface for building and managing queries on geospatial data layers within QGIS. Users can create, test, save, and apply queries easily, improving workflow efficiency for data analysis and visualization.
+The Query Manager provides an intuitive interface for building and managing queries on geospatial data layers within QGIS. Users can create, test, save, and apply queries easily, improving workflow efficiency for data analysis and visualization.
 
 ## Features
 
