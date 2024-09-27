@@ -6,7 +6,7 @@
 name=Query Manager
 qgisMinimumVersion=3.0
 description=Save your query in single plugin
-version=0.1
+version=1.27
 author=Philippine Statistics Authority | GMD
 email=kedeleon.psagmd@gmail.com
 
