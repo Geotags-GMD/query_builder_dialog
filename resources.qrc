@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/query_builder_dialog" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
