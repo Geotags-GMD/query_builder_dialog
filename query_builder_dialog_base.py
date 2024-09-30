@@ -10,6 +10,10 @@ class QueryBuilderDialog(QtWidgets.QDialog):
         super().__init__(parent)
         self.setWindowTitle("Query Builder and Manager")
 
+        # Initialize fields and values lists
+        self.fields = []
+        self.values = []
+
         # Create Tab Widget
         self.tabs = QtWidgets.QTabWidget()
 
@@ -181,38 +185,63 @@ class QueryBuilderDialog(QtWidgets.QDialog):
     def populate_fields(self):
         """Populate the fields (attributes) for the selected layer."""
         self.field_dropdown.clear()
+        self.fields = []  # Reset fields list
         selected_layer_name = self.layer_dropdown.currentText()
         layer = self.get_layer_by_name(selected_layer_name)
         
         if layer:
             # Get the fields from the selected layer
-            self.fields = [field.name() for field in layer.fields()]  # Store the field list
+            self.fields = [field.name() for field in layer.fields()]
             self.field_dropdown.addItems(self.fields)
+        else:
+            self.field_dropdown.addItem("No layer selected")
 
     def populate_values(self):
         """Populate unique values for the selected field."""
         self.value_dropdown.clear()
+        self.values = []  # Reset values list
         selected_layer_name = self.layer_dropdown.currentText()
         layer = self.get_layer_by_name(selected_layer_name)
 
         if layer:
             selected_field = self.field_dropdown.currentText()
-            self.values = layer.uniqueValues(layer.fields().indexOf(selected_field))  # Store values list
-            self.value_dropdown.addItems([str(value) for value in self.values])
+            if selected_field and selected_field != "No layer selected":
+                self.values = layer.uniqueValues(layer.fields().indexOf(selected_field))
+                self.value_dropdown.addItems([str(value) for value in self.values])
+            else:
+                self.value_dropdown.addItem("No field selected")
+        else:
+            self.value_dropdown.addItem("No layer selected")
 
     def filter_fields(self):
         """Filter the fields in the dropdown based on the search input."""
         search_text = self.field_search.text().lower()
+        if not hasattr(self, 'fields') or not self.fields:
+            self.field_dropdown.clear()
+            self.field_dropdown.addItem("No fields available")
+            return
+
         filtered_fields = [field for field in self.fields if search_text in field.lower()]
         self.field_dropdown.clear()
-        self.field_dropdown.addItems(filtered_fields)
+        if filtered_fields:
+            self.field_dropdown.addItems(filtered_fields)
+        else:
+            self.field_dropdown.addItem("No matching fields")
 
     def filter_values(self):
         """Filter the values in the dropdown based on the search input."""
         search_text = self.value_search.text().lower()
+        if not hasattr(self, 'values') or not self.values:
+            self.value_dropdown.clear()
+            self.value_dropdown.addItem("No values available")
+            return
+
         filtered_values = [str(value) for value in self.values if search_text in str(value).lower()]
         self.value_dropdown.clear()
-        self.value_dropdown.addItems(filtered_values)
+        if filtered_values:
+            self.value_dropdown.addItems(filtered_values)
+        else:
+            self.value_dropdown.addItem("No matching values")
 
     def get_layer_by_name(self, layer_name):
         """Get a layer by name."""
